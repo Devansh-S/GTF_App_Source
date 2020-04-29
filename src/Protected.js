@@ -13,7 +13,7 @@ export const ProtectedRoute = ({ component: Component, loggedIn, ...rest }) => {
           return (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: "/GTFapp/",
               }}
             />
           );

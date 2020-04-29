@@ -46,7 +46,7 @@
 
     @media (min-width: 600px){
         .mainContainer{
-            grid-template-columns: repeat(auto-fill, minmax(600px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
             height: inherit;
             width: inherit;
             display: grid;
@@ -77,6 +77,16 @@
         }
     }
 
+    .loader {
+        align-items: center;
+        align-content: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -50px;
+        margin-top: -50px;
+        background-size: 100%;
+      }
 
     .container { 
         display: grid;

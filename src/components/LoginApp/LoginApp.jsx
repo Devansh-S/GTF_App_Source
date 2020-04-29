@@ -6,7 +6,9 @@ import Register from "../login/register";
 import loginImg from "../../login.png";
 import fireB from '../../config/FireBase';
 import bgimg from '../../p1.jpg';
+import ReactLoading from "react-loading";
 
+//        this.setState({loading: false})
 
 class LoginApp extends React.Component {
   constructor(props) {
@@ -80,12 +82,13 @@ class LoginApp extends React.Component {
     fireB.auth().onAuthStateChanged((user) => {
       if (user) {
         console.log('/apppp')
-        this.props.history.push("/app");
+        this.props.history.push("/GTFapp/app");
       } else {
         console.log('////////')
-        this.props.history.push("/");
+        this.props.history.push("/GTFapp/");
       }
     })
+    this.setState({loading: false})
   }
 
   changeState() {
@@ -107,43 +110,46 @@ class LoginApp extends React.Component {
     const current = isLogginActive ? "Register" : "Login";
     const currentActive = isLogginActive ? "login" : "register";
     return (
-      <div className="LoginApp">
-        <img className='bgimg' src={bgimg} alt="img"/>
-        <div className="login">
-          <div className='mainContainer'>
-            <img src={loginImg} alt='background'/>
-            <div className="container" ref={ref => (this.container = ref)}>
-              {isLogginActive && (
-                <Login 
-                containerRef={ref => (this.current = ref)}
-                usernameValue={ this.state.username ? this.state.username: ''}
-                onChangeUsername={ (val) => this.setInputValue('username', val)}
-                passwordValue={ this.state.password ? this.state.password: ''}
-                onChangePassword={ (val) => this.setInputValue('password', val)}
-                onClick={ (e)=> this.doLogin(e) }
-                BtnDisable={this.buttonDisabled}
+      <div>
+        {!this.state.loading ? (
+        <div className="LoginApp">
+          <img className='bgimg' src={bgimg} alt="img"/>
+          <div className="login">
+            <div className='mainContainer'>
+              <img src={loginImg} alt='background'/>
+              <div className="container" ref={ref => (this.container = ref)}>
+                {isLogginActive && (
+                  <Login 
+                  containerRef={ref => (this.current = ref)}
+                  usernameValue={ this.state.username ? this.state.username: ''}
+                  onChangeUsername={ (val) => this.setInputValue('username', val)}
+                  passwordValue={ this.state.password ? this.state.password: ''}
+                  onChangePassword={ (val) => this.setInputValue('password', val)}
+                  onClick={ (e)=> this.doLogin(e) }
+                  BtnDisable={this.buttonDisabled}
+                  />
+                )}
+                {!isLogginActive && (
+                  <Register 
+                  containerRef={ref => (this.current = ref)}
+                  usernameValue={ this.state.username ? this.state.username: ''}
+                  onChangeUsername={ (val) => this.setInputValue('username', val)}
+                  passwordValue={ this.state.password ? this.state.password: ''}
+                  onChangePassword={ (val) => this.setInputValue('password', val)}
+                  onClick={ (e)=> this.doSignup(e) }
+                  BtnDisable={this.buttonDisabled}
+                  />
+                )}
+                <RightSide
+                current={current}
+                currentActive={currentActive}
+                containerRef={ref => (this.rightSide = ref)}
+                onClick={this.changeState.bind(this)}
                 />
-              )}
-              {!isLogginActive && (
-                <Register 
-                containerRef={ref => (this.current = ref)}
-                usernameValue={ this.state.username ? this.state.username: ''}
-                onChangeUsername={ (val) => this.setInputValue('username', val)}
-                passwordValue={ this.state.password ? this.state.password: ''}
-                onChangePassword={ (val) => this.setInputValue('password', val)}
-                onClick={ (e)=> this.doSignup(e) }
-                BtnDisable={this.buttonDisabled}
-                />
-              )}
-              <RightSide
-              current={current}
-              currentActive={currentActive}
-              containerRef={ref => (this.rightSide = ref)}
-              onClick={this.changeState.bind(this)}
-              />
+              </div>
             </div>
           </div>
-        </div>
+        </div>) : (<div className='loader'><ReactLoading type={"bars"} color={"black"} height={100} width={100}/></div>)}
       </div>
     );
   }

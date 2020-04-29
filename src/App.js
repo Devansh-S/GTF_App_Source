@@ -45,8 +45,8 @@ authListener() {
         <div>
           {!this.state.loading ? (
           <Switch>
-            <Route exact path='/' component={LoginApp} />
-            <ProtectedRoute exact path='/app' component={Map} loggedIn={this.state.flag} />
+            <Route exact path='/GTFapp/' component={LoginApp} />
+            <ProtectedRoute exact path='/GTFapp/app' component={Map} loggedIn={this.state.flag} />
           </Switch> ) :
           (<div className='loader'>
             <ReactLoading type={"bars"} color={"black"} height={100} width={100}/>
