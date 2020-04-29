@@ -1,0 +1,154 @@
+//Custom Fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans&display=swap");
+
+.LoginApp {
+  align-items: center;
+  align-content: center;
+  font-family: "Open Sans", sans-serif;
+  width: 100vw;
+  height: 100vh;
+  box-shadow: inset 0px 0px 80px 30px rgba(0,0,0,0.25);
+}
+
+//Login Main Container
+
+
+  .login {
+    margin-top: 10vh;
+    margin-bottom: 10vh;
+    margin-left: 10vw;
+    margin-right: 10vw;
+
+    height: 80vh;
+    width: 80vw;
+    //min-height: 44em;
+    transform: rotatey(0deg);
+    position: absolute;
+
+    img {
+        margin: auto;
+        width: 22vw;
+        height: 28vh;
+        min-width: 220px;
+        min-height: 200px;
+        }
+    
+
+    .mainContainer{
+        height: inherit;
+        width: inherit;
+        display: grid;
+        position: absolute;
+    }
+
+    @media (min-width: 600px){
+        .mainContainer{
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            height: inherit;
+            width: inherit;
+            display: grid;
+            position: absolute;
+
+        }
+
+        img {
+            margin: auto;
+            width: 34vw;
+            height: 58vh;
+            min-width: 200px;
+            min-height: 250px;
+            }
+
+    }
+
+
+    .container {
+        
+        display: grid;
+        margin: auto;
+        position: relative;
+        align-content: center;
+        align-items: center;
+        justify-items: center;
+        width: 50vw;
+        //transition: transform 200ms ease-in-out;
+    }
+
+
+
+    .base-container{
+        padding: 0px;
+        align-content: center;
+        position: absolute;
+        z-index: 99;
+        background: #ffff;
+        box-shadow: 0px 0px 12px 2px rgba(15, 15, 15, 0.2);
+        border-radius: 4px;
+    
+    }
+
+    .right-side {
+        transform: rotate(-90deg);
+        width: 30vw;
+        height: 30vh;
+        position: relative;
+        background-color: #3498db;
+        border-radius: 6px;
+        transition: all 400ms ease-in-out;
+        cursor: pointer;
+        box-shadow: 0px 0px 12px 2px rgba(15, 15, 15, 0.3);
+
+        &.right {
+        transform: rotate(-270deg);
+        text-align: right;
+        right: -10%;
+        z-index: 1;
+        &:hover {
+            right: -15%;
+        }
+        }
+
+        &.left {
+        text-align: left;
+        right: 10%;
+        z-index: 1;
+        &:hover {
+            right: 15%;
+        }
+        }
+
+        .text {
+        font-size: 21px;
+        font-weight: 500;
+        color: #fff;
+        }
+    }
+    }
+
+.inner-container {
+    text-align: center;
+    
+}
+
+//Button
+.btn {
+    padding-left: 2vw;
+    padding-right: 2vw;
+    margin-bottom: 3vh;
+    float: left;
+    margin-left: auto;
+    margin-right: auto; 
+  font-size: 21px;
+  border: 0;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 3px;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: #2386c8;
+  }
+  &:focus {
+    outline: none;
+  }
+}

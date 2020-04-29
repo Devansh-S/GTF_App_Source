@@ -1,26 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.scss";
+import Map from "./components/map/Map";
+import LoginApp from './components/LoginApp/LoginApp';
+import fireB from "./config/FireBase";
+/*import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";*/
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogginActive: true,
+      isUserLoggedIn: {},
+    };
+  }
+
+
+componentDidMount() {
+  this.authListener()
 }
+  
+authListener() {
+  fireB.auth().onAuthStateChanged((user) => {
+    console.log(user);
+    if (user) {
+      this.setState({isUserLoggedIn: user})
+    } else {
+      this.setState({isUserLoggedIn: null})
+    }
+  })
+}
+
+  render() {
+    return (
+        <div>
+          {this.state.isUserLoggedIn ? (<Map />) : (<LoginApp />) }
+        </div>
+    ) 
+  }
+}
+
 
 export default App;
