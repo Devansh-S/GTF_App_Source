@@ -4,14 +4,15 @@ import "../login/style.scss";
 import Login from '../login/login';
 import Register from "../login/register";
 import loginImg from "../../login.png";
-import UserStore from '../../stores/UserStore'
 import fireB from '../../config/FireBase';
+import bgimg from '../../p1.jpg';
 
 
 class LoginApp extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLogginActive: true,
       username: '',
       password: '',
       buttonDisabled: false
@@ -74,9 +75,17 @@ class LoginApp extends React.Component {
     }
   }
 
-
   componentDidMount() {
     this.rightSide.classList.add("right");
+    fireB.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('/apppp')
+        this.props.history.push("/app");
+      } else {
+        console.log('////////')
+        this.props.history.push("/");
+      }
+    })
   }
 
   changeState() {
@@ -99,39 +108,38 @@ class LoginApp extends React.Component {
     const currentActive = isLogginActive ? "login" : "register";
     return (
       <div className="LoginApp">
+        <img className='bgimg' src={bgimg} alt="img"/>
         <div className="login">
           <div className='mainContainer'>
-            <img src={loginImg}/>
+            <img src={loginImg} alt='background'/>
             <div className="container" ref={ref => (this.container = ref)}>
-              <div className='inner-box'>
-              </div>
-                {isLogginActive && (
-                  <Login 
-                  containerRef={ref => (this.current = ref)}
-                  usernameValue={ this.state.username ? this.state.username: ''}
-                  onChangeUsername={ (val) => this.setInputValue('username', val)}
-                  passwordValue={ this.state.password ? this.state.password: ''}
-                  onChangePassword={ (val) => this.setInputValue('password', val)}
-                  onClick={ (e)=> this.doLogin(e) }
-                  BtnDisable={this.buttonDisabled}
-                  />
-                )}
-                {!isLogginActive && (
-                  <Register 
-                  containerRef={ref => (this.current = ref)}
-                  usernameValue={ this.state.username ? this.state.username: ''}
-                  onChangeUsername={ (val) => this.setInputValue('username', val)}
-                  passwordValue={ this.state.password ? this.state.password: ''}
-                  onChangePassword={ (val) => this.setInputValue('password', val)}
-                  onClick={ (e)=> this.doSignup(e) }
-                  BtnDisable={this.buttonDisabled}
-                  />
-                )}
-                <RightSide
-                current={current}
-                currentActive={currentActive}
-                containerRef={ref => (this.rightSide = ref)}
-                onClick={this.changeState.bind(this)}
+              {isLogginActive && (
+                <Login 
+                containerRef={ref => (this.current = ref)}
+                usernameValue={ this.state.username ? this.state.username: ''}
+                onChangeUsername={ (val) => this.setInputValue('username', val)}
+                passwordValue={ this.state.password ? this.state.password: ''}
+                onChangePassword={ (val) => this.setInputValue('password', val)}
+                onClick={ (e)=> this.doLogin(e) }
+                BtnDisable={this.buttonDisabled}
+                />
+              )}
+              {!isLogginActive && (
+                <Register 
+                containerRef={ref => (this.current = ref)}
+                usernameValue={ this.state.username ? this.state.username: ''}
+                onChangeUsername={ (val) => this.setInputValue('username', val)}
+                passwordValue={ this.state.password ? this.state.password: ''}
+                onChangePassword={ (val) => this.setInputValue('password', val)}
+                onClick={ (e)=> this.doSignup(e) }
+                BtnDisable={this.buttonDisabled}
+                />
+              )}
+              <RightSide
+              current={current}
+              currentActive={currentActive}
+              containerRef={ref => (this.rightSide = ref)}
+              onClick={this.changeState.bind(this)}
               />
             </div>
           </div>

@@ -1,5 +1,5 @@
 {
-  "homepage": "http://devansh-s.github.io/GTFapp",
+  "homepage": "http://devansh-s.github.io/GTFapp/",
   "name": "mapboxAndReact",
   "version": "0.0.1",
   "private": true,
@@ -16,6 +16,9 @@
     "react": "^16.9.0",
     "react-bootstrap": "^1.0.0",
     "react-dom": "^16.9.0",
+    "react-fade-in": "^1.0.0",
+    "react-loading": "^2.0.3",
+    "react-lottie": "^1.2.3",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.1.1"
   },
@@ -23,7 +26,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "browserslist": {
     "production": [

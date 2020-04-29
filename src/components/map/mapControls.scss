@@ -13,6 +13,13 @@
     position: relative;
     display: inline-block;
   }
+
+  .logout-btn {
+    z-index: 99;
+    float: right;
+    position: relative;
+    display: inline-block;
+  }
   
   /* Dropdown Content (Hidden by Default) */
   .dropdown-content {

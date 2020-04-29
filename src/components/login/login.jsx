@@ -1,9 +1,6 @@
 import React from "react";
 
 export class Login extends React.Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     return (
@@ -18,7 +15,7 @@ export class Login extends React.Component {
               <input type="password" name="password" placeholder="password" value={ this.props.passwordValue } onChange={ (f) => this.props.onChangePassword(f.target.value)}/>
             </div>
           </div>
-          <button type="button" className="btn" onClick={ (e) => this.props.onClick(e)} disabled={this.props.BtnDisable}>
+          <button type="button" className="Btn" onClick={ (e) => this.props.onClick(e)} disabled={this.props.BtnDisable}>
             Login
           </button>
         </div>

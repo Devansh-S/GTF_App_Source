@@ -18,7 +18,7 @@ export class Register extends React.Component {
               <input type="text" name="password" placeholder="password" value={ this.props.passwordValue } onChange={ (f) => this.props.onChangePassword(f.target.value)}/>
             </div>
           </div>
-          <button type="button" className="btn" onClick={ (e) => this.props.onClick(e)} disabled={this.props.BtnDisable} >
+          <button type="button" className="Btn" onClick={ (e) => this.props.onClick(e)} disabled={this.props.BtnDisable} >
             Register
           </button>
         </div>

@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import './mapControls.scss';
+import fireB from "../../config/FireBase";
+
 
 class MapControls extends Component {
 
@@ -8,7 +10,7 @@ class MapControls extends Component {
         this.state={
             styles: [
                     {key: 1, name: 'Dark', link: 'dark-v10'}, 
-                    {key: 2, name: 'Satellite', link: 'satellite-v9'},
+                    {key: 2, name: 'Satellite', link: 'satellite-streets-v11'},
                     {key: 3, name: 'Outdoors',link: 'outdoors-v11'},
                     {key: 4, name: 'Light', link: 'light-v10'},
                     {key: 5, name: 'Streets', link: 'streets-v11'}],
@@ -27,6 +29,10 @@ class MapControls extends Component {
     handleTypeClick = (event) => {
     }
 
+    handleLogout = () => {
+        fireB.auth().signOut()
+    }
+
     render() {
         return (
             <div>
@@ -35,10 +41,9 @@ class MapControls extends Component {
                     <div className="dropdown-content">
                         {this.state.styles.map( (layer, key, idx) => {
                             return <p key={key} name={layer.link} onClick={ () => this.handleStyleClick(layer) }>{layer.name}</p>
-                        })}
+                        })} 
                     </div>
                 </div>
-
                 <div className="dropdown">
                     <button className="dropbtn">Type</button>
                     <div className="dropdown-content">
@@ -46,6 +51,9 @@ class MapControls extends Component {
                             return <p key={key} name={type.link} onClick={ () => this.handleTypeClick(type) }>{type.name}</p>
                         })}
                     </div>
+                </div>
+                <div className="logout-btn">
+                    <button className="dropbtn" onClick={this.handleLogout}>Logout</button>
                 </div>
             </div>
         )
