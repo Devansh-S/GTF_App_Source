@@ -3,10 +3,10 @@ import "./LoginApp.scss";
 import "../login/style.scss";
 import Login from '../login/login';
 import Register from "../login/register";
-import loginImg from "../../login.png";
 import fireB from '../../config/FireBase';
-import bgimg from '../../p1.jpg';
 import ReactLoading from "react-loading";
+import img from '../../pp.png';
+
 
 //        this.setState({loading: false})
 
@@ -113,10 +113,9 @@ class LoginApp extends React.Component {
       <div>
         {!this.state.loading ? (
         <div className="LoginApp">
-          <img className='bgimg' src={bgimg} alt="img"/>
           <div className="login">
             <div className='mainContainer'>
-              <img src={loginImg} alt='background'/>
+              <img src={img} alt='background'/>
               <div className="container" ref={ref => (this.container = ref)}>
                 {isLogginActive && (
                   <Login 

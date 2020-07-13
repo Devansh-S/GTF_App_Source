@@ -27,7 +27,7 @@ componentDidMount() {
   
 authListener() {
   fireB.auth().onAuthStateChanged((user) => {
-    console.log(user);
+    //console.log(user);
     if (user) {
       this.setState({isUserLoggedIn: user});
       this.setState({flag: true})

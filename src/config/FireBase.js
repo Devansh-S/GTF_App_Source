@@ -1,14 +1,14 @@
 import firebase from 'firebase';
 
-const config = {
-    apiKey: "AIzaSyBtXnFAj2YBJnxXbXvtAt3h3bcblS1KUaE",
-    authDomain: "gtfapp-eb372.firebaseapp.com",
-    databaseURL: "https://gtfapp-eb372.firebaseio.com",
-    projectId: "gtfapp-eb372",
-    storageBucket: "gtfapp-eb372.appspot.com",
-    messagingSenderId: "961355962531",
-    appId: "1:961355962531:web:31520bc4120f103f1d8716",
-    measurementId: "G-PVZ0QY8L1K"
+var config = {
+    apiKey: "AIzaSyAP9SY8RCk9kB4s9nubnA6t8ShfBdH4Hkc",
+    authDomain: "florayion.firebaseapp.com",
+    databaseURL: "https://florayion.firebaseio.com",
+    projectId: "florayion",
+    storageBucket: "florayion.appspot.com",
+    messagingSenderId: "866204326214",
+    appId: "1:866204326214:web:06d3bac4cd710b8f69ad47",
+    measurementId: "G-EQ9Z60REKF"
 };
 const fireB = firebase.initializeApp(config);
 export default fireB;
