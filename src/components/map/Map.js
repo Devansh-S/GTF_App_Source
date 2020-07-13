@@ -6,11 +6,7 @@ import MapControls from './MapControls';
 import '../map/mapControls.scss';
 import { json } from 'd3-request';
 
-
-
-
 class Map extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -75,7 +71,6 @@ class Map extends React.Component {
     }
 
     handleStyleBtnClick = event => {
-
       let styleID = event.link;
       this.setState({style: styleID})
       this.swapStyle(styleID)
