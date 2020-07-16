@@ -16,7 +16,6 @@ class Map extends React.Component {
       lng: 80.3319,
       zoom: 6,
       style: 'mapbox://styles/mapbox/light-v10',
-      activeType: 'all',
       Data: 0,
       faunaSpecies: [],
       floraSpecies: [],
@@ -26,7 +25,7 @@ class Map extends React.Component {
       fauna: [],
       disturbance: [],
 
-      currentPlottingColorScheme: [],
+      markerCount: [],
 
       markedFlora: [],
       markedFauna: [],
@@ -90,34 +89,25 @@ class Map extends React.Component {
     const fireData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
     this.setState({flora: fireData.filter(records => records.FFType === "Flora")})
     this.setState({fauna: fireData.filter(records => records.FFType === "Fauna")})
-    this.setState({disturbances: fireData.filter(records => records.FFType === "Disturbance")})
-    console.log(this.state.flora)
-    console.log(this.state.fauna)
-    console.log(this.state.disturbances)
-  };
-
-  getCoordinatesFromObjectArray = () => {
-    
-  };
-
-  makeCoordinateObjects = () => {
-      
+    this.setState({disturbance: fireData.filter(records => records.FFType === "Disturbance")})
+    //console.log(this.state.flora)
+    //console.log(this.state.fauna)
+    //console.log(this.state.disturbance)
   };
 
   handleInputArray = (selectedItemsArray, selectedItem) => {
-
-    console.log('Input Inbound',selectedItem)
-
-    var allPlotted = []
-    var currentPlotSpecies = []
-
     if (selectedItem.type === 'Flora'){
       var markedFloraSpecie = []
       var p = this.state.flora.filter(records => records.SpecieName === selectedItem.name)
       //check if there are entries for following species
+      var tempObj = {
+        name: selectedItem.name,
+        count: p.length
+      }
+      this.state.markerCount.push(tempObj)
+
       if (p.length > 0) {
         for (var j =0; j<p.length; j++){
-          console.log('inner-fired',j)
           var long = parseFloat(p[j].Location.substring(12,22))
           var lat = parseFloat(p[j].Location.substring(34,44))
           //console.log(p[j])
@@ -133,7 +123,7 @@ class Map extends React.Component {
             markedFloraSpecie.push(selectedItem.name)
             this.createCustomizationOptions(obj)
           }
-          this.addMarker(obj)
+          this.addMarker(obj,j)
         }
       }
     }
@@ -142,6 +132,12 @@ class Map extends React.Component {
       //console.log('fauna fired')
       var markedFaunaSpecie = []
       p = this.state.fauna.filter(records => records.SpecieName === selectedItem.name)
+      
+      tempObj = {
+        name: selectedItem.name,
+        count: p.length
+      }
+      this.state.markerCount.push(tempObj)
       //check if there are entries for following species
       //console.log(selectedItem.name)
       if (p.length > 0) {
@@ -161,14 +157,23 @@ class Map extends React.Component {
             markedFaunaSpecie.push(selectedItem.name)
             this.createCustomizationOptions(obj)
           }
-          this.addMarker(obj)
+          this.addMarker(obj, j)
         }
       }
     }
 
-    if (selectedItem.type === 'l'){
-      p = this.state.flora.filter(records => records.SpecieName === selectedItem.name)
+    if (selectedItem.type === "Disturbance"){
+      var markedDisturbance = []
+      p = this.state.disturbance.filter(records => records.SpecieName === selectedItem.name)
+
+      tempObj = {
+        name: selectedItem.name,
+        count: p.length
+      }
+      this.state.markerCount.push(tempObj)
+
       //check if there are entries for following species
+      //console.log(p)
       if (p.length > 0) {
         for (j =0; j<p.length; j++){
           long = parseFloat(p[j].Location.substring(12,22))
@@ -181,25 +186,26 @@ class Map extends React.Component {
             name: p[j].SpecieName,
             cordinate: [long,lat],
             time: p[j].Time,
-            color: 'red',
           }
-          console.log('flora-obj',obj)
-          this.createCustomizationOptions(obj)
-          this.addMarker(obj)
+          if (markedDisturbance.indexOf(selectedItem.name) < 0) {
+            markedDisturbance.push(selectedItem.name)
+            this.createCustomizationOptions(obj)
+          }
+          this.addMarker(obj,j)
         }
       }
     }
   }
 
   
-  addMarker = (Object) => {
-    var popup = new mapboxgl.Popup({ offset: 5 }).setHTML('<h6>' + Object.name + '</h6><strong>' + Object.subSpecie + '<br>' + Object.type + '</strong><p>' + 'Lat: ' + Object.cordinate[1] + '<br>' + 'Lng: ' + Object.cordinate[0] + '</p>');
-
+  addMarker = (Object, idNum) => {
+    var popup = new mapboxgl.Popup({ offset: 5 }).setHTML(`<h6>${Object.name}</h6><strong>${Object.subSpecie}<br>${Object.type}</strong><p>Lat: ${Object.cordinate[1]}<br>Lng: ${Object.cordinate[0]}</p>`);
+  
     // create DOM element for the marker
     var el = document.createElement('div');
-    el.id = Object.name + '-marker';
+    el.id = Object.name +'-marker' + idNum.toString();
     el.style.cssText = "background-size: cover; width: 100px; height: 100px; border-radius: 50%; cursor: pointer; background: radial-gradient(circle 15px, #ff0000 0%, #00000000 100%)"
-    // console.log(Object.cordinate)
+
     // create the marker
     new mapboxgl.Marker(el)
     .setLngLat(Object.cordinate)
@@ -208,22 +214,17 @@ class Map extends React.Component {
   }
 
   handleMarkerColorChange = (e) => {
-    console.log(e.target.value)
-    console.log(e.target.id)
-    var temp = this.state.currentPlottingColorScheme
-    for (var K=0; K<temp.length; K++) {
-      if (temp[K].name === e.target.id) {
-        temp[K].color = e.target.value
+    for (var i=0 ; i<this.state.markerCount.length ; i++ ) {
+      if (this.state.markerCount[i].name === e.target.id) {
+        for (var j=0; j<this.state.markerCount[i].count ; j++){
+          let element = document.getElementById(e.target.id + '-marker' + j.toString() )
+          ReactDOM.findDOMNode(element).style.background = 'radial-gradient(circle 15px, ' + e.target.value + ' 0%, #00000000 100%)'  
+        }
       }
     }
-    //this.setState({currentPlottingColorScheme: temp})
-    //console.log(this.state.currentPlottingColorScheme)
-    let element = document.getElementById(`${e.target.id}-marker`)
-    ReactDOM.findDOMNode(element).style.background = 'radial-gradient(circle 15px, ' + e.target.value + ' 0%, #00000000 100%)'
   }
 
   createCustomizationOptions = (children) => {  
-    console.log(children)
     var main_parent = document.getElementById('mySidepanel')
     var name = document.createElement('p')
       name.innerHTML = children.name
@@ -244,7 +245,7 @@ class Map extends React.Component {
     this.fetchData();
     this.fetchAvaliableSpecies();
     mapboxgl.accessToken = 'pk.eyJ1IjoiZGV2NTk2IiwiYSI6ImNrOHJsaHY5cDAzcGQzbHBqc21vaWsxcnMifQ.B5rBbh4fDvTHEqQHrGU_Bg';
-    const {lat, lng, zoom, style, activeType} = this.state
+    const {lat, lng, zoom, style} = this.state
     this.map = new mapboxgl.Map({
       container: this.mapContainer,
       style: style,

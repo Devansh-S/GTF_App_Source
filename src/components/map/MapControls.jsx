@@ -99,7 +99,7 @@ class MapControls extends Component {
 
                 <div className='customization_Panel'>
                     <input type="checkbox" id="sidepanel_toggle" />
-                    <div id="mySidepanel" class="sidepanel">
+                    <div id="mySidepanel" className="sidepanel">
                         
                     </div>
                     <div className='toggleBtn2'>
