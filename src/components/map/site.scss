@@ -21,7 +21,6 @@
     }
 
 #marker {
-    background-color: darkred;
     background-size: cover;
     width: 100px;
     height: 100px;
@@ -41,17 +40,31 @@
 
 
 .sidePanelElement {
+    width: 400px;
     background-color: rgb(121, 121, 121);
     height: auto;
     margin: 2px;
-    margin-bottom: 0;
+    margin-right: auto;
+    margin-left: auto;
+    
     padding-right: 10px;
     padding: 5px;
     color: black;
+    display: flex;
+    align-items: center;
 }
 
 .sidePanelElement p {
     margin-bottom: 0;
     padding: 3px;
+}
+
+.sidePanelElement input {
+    width: 70px;
+    padding: 0px;
+    margin: auto;
+    margin-right: 30px;
+    height: 22px;
+    margin-left: auto;
 }
 
