@@ -115,8 +115,6 @@ class Map extends React.Component {
       var markedFloraSpecie = []
       var p = this.state.flora.filter(records => records.SpecieName === selectedItem.name)
       //check if there are entries for following species
-      console.log(p)
-      console.log('fired')
       if (p.length > 0) {
         for (var j =0; j<p.length; j++){
           console.log('inner-fired',j)
@@ -129,20 +127,10 @@ class Map extends React.Component {
             name: p[j].SpecieName,
             cordinate: [long,lat],
             time: p[j].Time,
-            color: 'red',
           }
 
           if (markedFloraSpecie.indexOf(selectedItem.name) < 0) {
             markedFloraSpecie.push(selectedItem.name)
-
-            console.log('kkkkk')
-            var mObj = {
-              name: selectedItem.name,
-              color: ''
-            }
-            currentPlotSpecies.push(mObj)
-            console.log(currentPlotSpecies)
-            this.setState({currentPlottingColorScheme: currentPlotSpecies})
             this.createCustomizationOptions(obj)
           }
           this.addMarker(obj)
@@ -167,12 +155,10 @@ class Map extends React.Component {
             name: p[j].SpecieName,
             cordinate: [long,lat],
             time: p[j].Time,
-            color: '',
           }
 
           if (markedFaunaSpecie.indexOf(selectedItem.name) < 0) {
             markedFaunaSpecie.push(selectedItem.name)
-
             this.createCustomizationOptions(obj)
           }
           this.addMarker(obj)
