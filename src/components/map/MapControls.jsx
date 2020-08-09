@@ -89,26 +89,13 @@ class MapControls extends Component {
                             </div>
                         </div>
                     </div>
-                    
-                    <div className='toggleBtn1'>
-                        <label htmlFor="toggle">
-                            <div className="arrow-right"></div>
-                        </label>
-                    </div>
-                </div>
 
-                <div className='customization_Panel'>
-                    <input type="checkbox" id="sidepanel_toggle" />
-                    <div id="mySidepanel" className="sidepanel">
-                        
-                    </div>
-                    <div className='toggleBtn2'>
-                        <label htmlFor="sidepanel_toggle">
+                    <label htmlFor="toggle">
+                        <div className='toggleBtn1'>
                             <div className="arrow-right"></div>
-                        </label>
-                    </div>
+                        </div>
+                    </label>
                 </div>
-
             </div>
         )
     }

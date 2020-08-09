@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom';
 import mapboxgl from 'mapbox-gl';
 import './site.scss';
 import './MapControls';
+import './SidePanel.scss'
 import MapControls from './MapControls';
 import '../map/mapControls.scss';
 import { json } from 'd3-request';
 import FireB from '../../config/FireBase';
+import SidePanel from './SidePanel';
 
 class Map extends React.Component {
   constructor(props) {
@@ -204,7 +206,7 @@ class Map extends React.Component {
     // create DOM element for the marker
     var el = document.createElement('div');
     el.id = Object.name +'-marker' + idNum.toString();
-    el.style.cssText = "background-size: cover; width: 100px; height: 100px; border-radius: 50%; cursor: pointer; background: radial-gradient(circle 15px, #ff0000 0%, #00000000 100%)"
+    el.style.cssText = "background-size: cover; width: 100px; height: 100px; border-radius: 50%; cursor: pointer; background: radial-gradient(circle 15px, #000000 0%, #00000000 100%)"
 
     // create the marker
     new mapboxgl.Marker(el)
@@ -304,14 +306,17 @@ class Map extends React.Component {
   render() {
       return (
           <div>
-              <MapControls 
-                disturbances={this.state.disturbancesTypes} 
-                flora={this.state.floraSpecies} 
-                fauna={this.state.faunaSpecies} 
-                changeStyle={this.handleStyleBtnClick}
-                handleInput={this.handleInputArray}
-                />
-              <div ref={el => this.mapContainer = el} className='mapContainer' />
+              <div ref={el => this.mapContainer = el} className='mapContainer' /> 
+              <div className='controlsWrapper'>
+                <MapControls 
+                  disturbances={this.state.disturbancesTypes} 
+                  flora={this.state.floraSpecies} 
+                  fauna={this.state.faunaSpecies} 
+                  changeStyle={this.handleStyleBtnClick}
+                  handleInput={this.handleInputArray}
+                  />
+                <SidePanel />
+              </div>
           </div>
       )
   }

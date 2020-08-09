@@ -17,7 +17,8 @@ class LoginApp extends React.Component {
       isLogginActive: true,
       username: '',
       password: '',
-      buttonDisabled: false
+      buttonDisabled: false,
+      regFlag: false,
     }
   }
   
@@ -47,7 +48,8 @@ class LoginApp extends React.Component {
     this.setState ({buttonDisabled: true})
 
     try {
-      fireB.auth().signInWithEmailAndPassword( this.state.username, this.state.password ).then((u) => {}).catch((error) => {console.log(error)})
+      this.createOverlay('Logging In\nPlease wait!')
+      fireB.auth().signInWithEmailAndPassword( this.state.username, this.state.password ).then((u) => {}).catch((error) => {this.changeOverlayText(error, 3000)})
     }
 
     catch(e) {
@@ -67,15 +69,71 @@ class LoginApp extends React.Component {
     this.setState ({buttonDisabled: true})
 
     try {
-      alert('SignUp is Disabled! Please Login using given credentials')
-      //fireB.auth().createUserWithEmailAndPassword( this.state.username, this.state.password ).then((u) => {}).then((u) => {console.log(u)}).catch((error) => {console.log(error)})
+      this.createOverlay('Please wait!')
+      const db = fireB.firestore();
+      const data = await db.collection("ControlFlags").doc("enableRegistrationFlag").get();
+      if (data.data().value){
+        //alert('Registering new user please wait!')
+        fireB.auth().createUserWithEmailAndPassword( this.state.username, this.state.password ).then(() => {this.reg('Registering User\n Please wait!')}).then((u) => {console.log(u)}).catch((error) => {this.changeOverlayText(error,3000)})
+        console.log('ppp')
+      }
+      else{
+        alert('SignUp is Disabled! Please Login using given credentials')
+      }
     }
 
-    catch(e) {
+    catch(e){
       console.log(e);
       this.resetForm();
     }
   }
+
+  createOverlay = (text, delay) => {
+    var main_parent = document.getElementById('LoginApp')
+    var element = document.createElement('div')
+    element.className = 'dialogBox' 
+    element.id = 'overlay'
+    main_parent.appendChild(element)
+
+    var ptext = document.createElement('p')
+    ptext.innerHTML = text
+    ptext.id = 'dialog_text'
+    ptext.className = 'dialog_text'
+
+    var element_inner = document.createElement('div')
+    element_inner.className = 'dialogBox-inner'
+    element_inner.id = 'dialogBox-inner'
+
+    element_inner.appendChild(ptext)
+    main_parent.appendChild(element_inner)
+
+    if (delay > 0){
+      const delayDebounceFn = setTimeout(() => {
+        element_inner.parentNode.removeChild(element_inner)
+        element.parentNode.removeChild(element)
+      }, delay)
+      this.resetForm()
+      return () => clearTimeout(delayDebounceFn)
+    }
+  }
+
+  changeOverlayText = (text, delay) => {
+    var ele = document.getElementById('dialog_text')
+    ele.innerHTML = text
+
+    var element1 = document.getElementById('dialogBox-inner')
+    var element2 = document.getElementById('overlay')
+    
+    if (delay > 0){
+      const delayDebounceFn = setTimeout(() => {
+        element1.parentNode.removeChild(element1)
+        element2.parentNode.removeChild(element2)
+      }, delay)
+      this.resetForm()
+      return () => clearTimeout(delayDebounceFn)
+    }
+  }
+
 
   componentDidMount() {
     this.rightSide.classList.add("right");
@@ -112,7 +170,7 @@ class LoginApp extends React.Component {
     return (
       <div>
         {!this.state.loading ? (
-        <div className="LoginApp">
+        <div className="LoginApp" id='LoginApp'>
           <div className="login">
             <div className='mainContainer'>
               <img src={img} alt='background'/>

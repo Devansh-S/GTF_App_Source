@@ -9,7 +9,7 @@ export class Login extends React.Component {
         <div className="content">
           <div className="form">
             <div className="form-group">
-              <input type="text" name="username" placeholder="username" value={ this.props.usernameValue } onChange={ (e) => this.props.onChangeUsername(e.target.value)} />
+              <input type="text" name="email" placeholder="email" value={ this.props.usernameValue } onChange={ (e) => this.props.onChangeUsername(e.target.value)} />
             </div>
             <div className="form-group">
               <input type="password" name="password" placeholder="password" value={ this.props.passwordValue } onChange={ (f) => this.props.onChangePassword(f.target.value)}/>

@@ -64,24 +64,28 @@
   }
 
 .toggleBtn1{
-  display: inline-block;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-  width: 48px;
+  width: 15px;
   height: 56px;
-  padding: 18px;
-  border-top-right-radius: 24px;
+  border-top-right-radius: 25px;
+  border-bottom-right-radius: 25px;
   background-color: crimson;
   transition: all 0.5s ease-out;
 }
 
+.toggleBtn1 > label {
+  margin: 0;
+}
+
 .arrow-right {
   z-index: 99;
-  width: 0; 
-  height: 0; 
-  padding: auto;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid black;
+  width: 0px;
+  height: 29px;
+  border-right: 3px solid black;
+  border-radius: 12px;
   transition: all 0.5s ease-out;
 }
 
@@ -99,7 +103,7 @@
 
 input[type=checkbox]:checked ~ .col0 {
   position: relative;
-  right: 430px;
+  right: 431px;
   transition: all 0.5s ease-out;
 }
 
@@ -118,84 +122,4 @@ input[type=checkbox]:checked ~ .col0 .toggleBtn .arrow-right {
   display: none;
   position: absolute;
   left: -100vw;
-}
-
-.customization_Panel {
-    position: relative;
-    display: inline-flex;
-}
-
-.MapControls .customization_Panel input[type=checkbox]:checked ~ .sidepanel {
-  background-color: rgb(78, 78, 78);
-  position: relative;
-  width: 430px;
-  transition: all 0.5s ease-out;
-}
-
-.toggleBtn2{
-  display: inline-block;
-  position: relative;
-  width: 48px;
-  height: 56px;
-  padding: 18px;
-  border-bottom-right-radius: 24px;
-  background-color: crimson;
-  transition: all 0.5s ease-out;
-}
-
-/* The sidepanel menu */
-.sidepanel {
-  height: 550px; /* Specify a height */
-  width: 0; /* 0 width - change this with JavaScript */
-  z-index: 98; /* Stay on top */
-  top: 0;
-  left: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
-}
-
-.MapControls .customization_Panel > input {
-  display: none;
-  position: absolute;
-  left: -100vw;
-}
-
-/* The sidepanel links */
-.sidepanel a {
-  padding: 8px 8px 8px 32px;
-  text-decoration: none;
-  font-size: 25px;
-  color: black;
-  display: block;
-  transition: 0.3s;
-}
-
-/* When you mouse over the navigation links, change their color */
-.sidepanel a:hover {
-  color: #f1f1f1;
-}
-
-/* Position and style the close button (top right corner) */
-.sidepanel .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
-}
-
-/* Style the button that is used to open the sidepanel */
-.openbtn {
-  font-size: 20px;
-  cursor: pointer;
-  background-color: #111;
-  color: white;
-  padding: 10px 15px;
-  border: none;
-}
-
-.openbtn:hover {
-  background-color: #444;
 }
