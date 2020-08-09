@@ -1,7 +1,7 @@
 import firebase from 'firebase';
 
 var config = {
-    apiKey: "AIzaSyAP9SY8RCk9kB4s9nubnA6t8ShfBdH4Hkc",
+    apiKey: "API-KEY-HERE",
     authDomain: "florayion.firebaseapp.com",
     databaseURL: "https://florayion.firebaseio.com",
     projectId: "florayion",
