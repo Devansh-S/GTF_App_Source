@@ -28,7 +28,11 @@
     cursor: pointer;
     background: radial-gradient(circle 15px, #ff0000 0%, #00000000 100%)
     }
-         
+
+.close-btn-marker {
+    cursor: pointer;
+    }
+
 .mapboxgl-popup {
     max-width: 200px;
 }

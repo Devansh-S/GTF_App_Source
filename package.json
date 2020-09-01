@@ -28,6 +28,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.1.1",
     "react-select-box": "^3.0.1",
+    "really-relaxed-json": "^0.2.24",
     "valid-url": "^1.0.9",
     "validatorjs": "^3.18.1"
   },

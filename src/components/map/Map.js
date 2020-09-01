@@ -9,6 +9,8 @@ import '../map/mapControls.scss';
 import { json } from 'd3-request';
 import FireB from '../../config/FireBase';
 import SidePanel from './SidePanel';
+import {toJson, Options} from 'really-relaxed-json';
+
 
 class Map extends React.Component {
   constructor(props) {
@@ -42,12 +44,11 @@ class Map extends React.Component {
   makeObjectsFromArray = (array, code, type) => {
     var newArray = []
     for (var i = 0; i < array.length; i++) {
-      newArray.push(
-        {
+      newArray.push({
         name: array[i],
         id: code + i.toString(),
         type: type,
-        }
+      }
     )}
     return newArray
   }
@@ -85,16 +86,25 @@ class Map extends React.Component {
     //console.log(allDisturbances)
   };
 
-  fetchData = async () => {
+  fetchRecord = async (value) => {
     const db = FireB.firestore();
-    const data = await db.collection("userData/9839576859/Data").get();
+    const data = await db.collection("userData").doc(value).collection("Data").get();
     const fireData = data.docs.map(doc => ({ ...doc.data(), id: doc.id }))
-    this.setState({flora: fireData.filter(records => records.FFType === "Flora")})
-    this.setState({fauna: fireData.filter(records => records.FFType === "Fauna")})
-    this.setState({disturbance: fireData.filter(records => records.FFType === "Disturbance")})
+    this.setState({flora: this.state.flora.concat(fireData.filter(records => records.FFType === "Flora"))})
+    this.setState({fauna: this.state.fauna.concat(fireData.filter(records => records.FFType === "Fauna"))})
+    this.setState({disturbance: this.state.disturbance.concat(fireData.filter(records => records.FFType === "Disturbance"))})
     //console.log(this.state.flora)
     //console.log(this.state.fauna)
     //console.log(this.state.disturbance)
+  }
+
+  fetchData = async () => {
+    const db = FireB.firestore();
+    const cdata = await db.collection("userData").get();
+    var usr_records = cdata.docs.map(doc => (doc.id))
+    this.setState({usr_rec: usr_records})
+    //console.log(this.state.usr_rec)
+    this.state.usr_rec.forEach(this.fetchRecord)
   };
 
   handleInputArray = (selectedItemsArray, selectedItem) => {
@@ -107,12 +117,13 @@ class Map extends React.Component {
         count: p.length
       }
       this.state.markerCount.push(tempObj)
-
+      //console.log(this.state.markerCount)
       if (p.length > 0) {
-        for (var j =0; j<p.length; j++){
-          var long = parseFloat(p[j].Location.substring(12,22))
-          var lat = parseFloat(p[j].Location.substring(34,44))
-          //console.log(p[j])
+        for (var j=0; j<p.length; j++){
+          var long = p[j].Longitude
+          var lat = p[j].Latitude
+          //console.log(lat)
+          
           var obj = {
             type: p[j].FFType,
             subSpecie: p[j]['Sub-Specie'],
@@ -134,19 +145,20 @@ class Map extends React.Component {
       //console.log('fauna fired')
       var markedFaunaSpecie = []
       p = this.state.fauna.filter(records => records.SpecieName === selectedItem.name)
-      
+      //console.log(p)
       tempObj = {
         name: selectedItem.name,
         count: p.length
       }
       this.state.markerCount.push(tempObj)
+      //console.log(this.state.markerCount)
       //check if there are entries for following species
       //console.log(selectedItem.name)
       if (p.length > 0) {
         for ( j =0; j<p.length; j++){
-          long = parseFloat(p[j].Location.substring(12,22))
-          lat = parseFloat(p[j].Location.substring(34,44))
-          //console.log(p[j])
+          var long = p[j].Longitude
+          var lat = p[j].Latitude
+          //console.log(lat)
           obj = {
             type: p[j].FFType,
             subSpecie: p[j]['Sub-Specie'],
@@ -178,9 +190,9 @@ class Map extends React.Component {
       //console.log(p)
       if (p.length > 0) {
         for (j =0; j<p.length; j++){
-          long = parseFloat(p[j].Location.substring(12,22))
-          lat = parseFloat(p[j].Location.substring(34,44))
-          //console.log(p[j])
+          var long = p[j].Longitude
+          var lat = p[j].Latitude
+          //console.log(lat)
           obj = {
             type: p[j].FFType,
             subSpecie: p[j]['Sub-Specie'],
@@ -198,10 +210,9 @@ class Map extends React.Component {
       }
     }
   }
-
   
   addMarker = (Object, idNum) => {
-    var popup = new mapboxgl.Popup({ offset: 5 }).setHTML(`<h6>${Object.name}</h6><strong>${Object.subSpecie}<br>${Object.type}</strong><p>Lat: ${Object.cordinate[1]}<br>Lng: ${Object.cordinate[0]}</p>`);
+    var popup = new mapboxgl.Popup({ offset: 5 }).setHTML(`<h6>${Object.name}</h6><strong>${Object.subSpecie}<br>${Object.type}</strong><p>Lat: ${Object.cordinate[1]}<br>Lng: ${Object.cordinate[0]}<br>Lng: ${Object.Time}</p>`);
   
     // create DOM element for the marker
     var el = document.createElement('div');
@@ -220,14 +231,46 @@ class Map extends React.Component {
       if (this.state.markerCount[i].name === e.target.id) {
         for (var j=0; j<this.state.markerCount[i].count ; j++){
           let element = document.getElementById(e.target.id + '-marker' + j.toString() )
+          console.log(element)
           ReactDOM.findDOMNode(element).style.background = 'radial-gradient(circle 15px, ' + e.target.value + ' 0%, #00000000 100%)'  
         }
       }
     }
   }
 
+  removemarker = (e) => {
+    var flag = false
+    var len = 0
+    //console.log(this.state.markerCount)
+    //console.log(e.target.id)
+    var elem1 = document.getElementById( 'sidePanelElement-' + e.target.id)
+        elem1.parentNode.removeChild(elem1)
+    for (var i=0 ; i<this.state.markerCount.length ; i++ ) {
+      if (this.state.markerCount[i].name === e.target.id) {
+        flag = true
+        len = this.state.markerCount[i].count
+        for (var j=0; j<this.state.markerCount[i].count ; j++){
+          let elem2 = document.getElementById(e.target.id + '-marker' + j.toString() )
+          elem2.parentNode.removeChild(elem2)
+        }
+      }
+    }
+    if (flag){
+      var tempObj = {
+        name: e.target.id,
+        count: len
+      }
+      this.state.markerCount.pop(tempObj)
+    }
+  }
+
   createCustomizationOptions = (children) => {  
     var main_parent = document.getElementById('mySidepanel')
+    var close = document.createElement('span')
+      close.innerHTML = 'x'
+      close.className = 'close-btn-marker'
+      close.id = children.name
+      close.onclick = this.removemarker
     var name = document.createElement('p')
       name.innerHTML = children.name
       name.className = 'sidePanelElement_SpecieName'
@@ -236,9 +279,11 @@ class Map extends React.Component {
       color.id = children.name
       color.onchange = this.handleMarkerColorChange;
     var element = document.createElement('div')
-    element.className = 'sidePanelElement'
+      element.className = 'sidePanelElement'
+      element.id = 'sidePanelElement-' + children.name
     element.appendChild(name)
     element.appendChild(color) 
+    element.appendChild(close)
     main_parent.appendChild(element)
     //ReactDOM.render(element, document.getElementById('mySidepanel'))
   };
